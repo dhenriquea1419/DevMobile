@@ -1,12 +1,11 @@
 import React from 'react';
 import { Alert, Button, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { router } from 'expo-router';
 
 export default function App() {
-  // Função para mostrar alerta ao clicar no botão
+  // Função para navegar para a lista de usuários
   const handleButtonPress = () => {
-    Alert.alert('Bem-vindo!', 'Bem-vindo ao meu app!', [
-      { text: 'OK', onPress: () => console.log('OK Pressed') },
-    ]);
+    router.push('/lista-usuarios');
   };
 
   return (
@@ -46,7 +45,7 @@ export default function App() {
         </View>
 
         {/* Rodapé */}
-        <Text style={styles.footer}>Desenvolvido com React Native & Expo</Text>
+        <Text style={styles.footer}>Desenvolvido com React Native & Expo por Daniel Araújo</Text>
       </View>
     </ScrollView>
   );
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F0F3FF',
+    backgroundColor: '#1E1E1E', // Fundo escuro para contraste
     paddingVertical: 20,
   },
   card: {
@@ -86,7 +85,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#2D3436',
+    color: '#FFFFFF', // Branco para contraste
     marginBottom: 10,
     textAlign: 'center',
   },
@@ -102,19 +101,21 @@ const styles = StyleSheet.create({
   courseLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#6C5CE7',
+    color: '#888888', // Mesma cor do rodapé
     marginBottom: 8,
+    fontStyle: 'italic', // Mesmo estilo do rodapé
   },
   courseText: {
     fontSize: 14,
-    color: '#636E72',
+    color: '#888888', // Mesma cor do rodapé
     marginVertical: 3,
+    fontStyle: 'italic', // Mesmo estilo do rodapé
   },
   motivationContainer: {
     marginVertical: 20,
     paddingHorizontal: 15,
     paddingVertical: 15,
-    backgroundColor: '#F0F3FF',
+    backgroundColor: '#2C2C2C', // Cinza escuro para o container
     borderRadius: 12,
     borderLeftWidth: 4,
     borderLeftColor: '#6C5CE7',
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
   motivationText: {
     fontSize: 16,
     fontStyle: 'italic',
-    color: '#2D3436',
+    color: '#FFFFFF', // Branco para contraste
     textAlign: 'center',
     fontWeight: '500',
   },
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
   footer: {
     marginTop: 20,
     fontSize: 12,
-    color: '#B2BEC3',
+    color: '#888888', // Cinza médio para o rodapé
     textAlign: 'center',
     fontStyle: 'italic',
   },
