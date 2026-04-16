@@ -1,62 +1,99 @@
-import React from 'react';
-import { Alert, Button, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  Alert,
+  Button,
+  Image,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { router } from 'expo-router';
+import NavBar from './components/NavBar.tsx';
+import { useTheme } from './context/ThemeContext';
 
 export default function App() {
-  // Função para navegar para a lista de usuários
+  const { darkMode } = useTheme();
+  const [imageModalVisible, setImageModalVisible] = useState(false);
+  const profileImageSource = require('./assets/images/WPP_IMAGE.png');
+
   const handleButtonPress = () => {
     router.push('/lista-usuarios');
   };
 
+  const openImageModal = () => setImageModalVisible(true);
+  const closeImageModal = () => setImageModalVisible(false);
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.card}>
-        {/* Foto de Perfil */}
-        <Image
-          source={require('./assets/images/WPP_IMAGE.png')}
-          style={styles.profileImage}
-        />
+    <View style={[styles.container, darkMode && styles.containerDark]}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={[styles.card, darkMode && styles.cardDark]}>
+          {/* Foto de Perfil */}
+          <TouchableOpacity onPress={openImageModal} activeOpacity={0.8}>
+            <Image source={profileImageSource} style={styles.profileImage} />
+          </TouchableOpacity>
 
-        {/* Nome */}
-        <Text style={styles.name}>Daniel Araújo</Text>
+          <Modal
+            visible={imageModalVisible}
+            animationType="fade"
+            transparent={true}
+            onRequestClose={closeImageModal}
+          >
+            <TouchableOpacity style={styles.modalOverlay} onPress={closeImageModal} activeOpacity={1}>
+              <View style={styles.modalContent}>
+                <Image source={profileImageSource} style={styles.modalImage} resizeMode="contain" />
+                <Text style={styles.modalHint}>Toque no fundo para fechar</Text>
+              </View>
+            </TouchableOpacity>
+          </Modal>
 
-        {/* Descrição do Curso */}
-        <View style={styles.courseContainer}>
-          <Text style={styles.courseLabel}>Cursos:</Text>
-          <Text style={styles.courseText}>• Dev React Native</Text>
-          <Text style={styles.courseText}>• Dev Java</Text>
-          <Text style={styles.courseText}>• QA</Text>
+          {/* Nome */}
+          <Text style={[styles.name, darkMode && styles.nameDark]}>Daniel Araújo</Text>
+
+          {/* Descrição do Curso */}
+          <View style={styles.courseContainer}>
+            <Text style={[styles.courseLabel, darkMode && styles.courseTextDark]}>Cursos:</Text>
+            <Text style={[styles.courseText, darkMode && styles.courseTextDark]}>• Dev React Native</Text>
+            <Text style={[styles.courseText, darkMode && styles.courseTextDark]}>• Dev Java</Text>
+            <Text style={[styles.courseText, darkMode && styles.courseTextDark]}>• QA</Text>
+          </View>
+
+          {/* Frase Motivacional */}
+          <View style={[styles.motivationContainer, darkMode && styles.motivationContainerDark]}>
+            <Text style={styles.motivationText}>
+              "Código hoje, sucesso amanhã"
+            </Text>
+          </View>
+
+          {/* Botão com Ação */}
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Clique aqui"
+              onPress={handleButtonPress}
+              color="#6C5CE7"
+            />
+          </View>
+
+          {/* Rodapé */}
+          <Text style={[styles.footer, darkMode && styles.footerDark]}>Desenvolvido com React Native & Expo por Daniel Araújo</Text>
         </View>
-
-        {/* Frase Motivacional */}
-        <View style={styles.motivationContainer}>
-          <Text style={styles.motivationText}>
-            "Código hoje, sucesso amanhã"
-          </Text>
-        </View>
-
-        {/* Botão com Ação */}
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Clique aqui"
-            onPress={handleButtonPress}
-            color="#6C5CE7"
-          />
-        </View>
-
-        {/* Rodapé */}
-        <Text style={styles.footer}>Desenvolvido com React Native & Expo por Daniel Araújo</Text>
-      </View>
-    </ScrollView>
+      </ScrollView>
+      <NavBar />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#1E1E1E', // Fundo escuro para contraste
+  },
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#1E1E1E', // Fundo escuro para contraste
     paddingVertical: 20,
   },
   card: {
@@ -140,5 +177,45 @@ const styles = StyleSheet.create({
     color: '#888888', // Cinza médio para o rodapé
     textAlign: 'center',
     fontStyle: 'italic',
+  },
+  containerDark: {
+    backgroundColor: '#0A0A0A',
+  },
+  cardDark: {
+    backgroundColor: '#2A2A2A',
+  },
+  nameDark: {
+    color: '#FFFFFF',
+  },
+  courseTextDark: {
+    color: '#CCCCCC',
+  },
+  motivationContainerDark: {
+    backgroundColor: '#1E1E1E',
+  },
+  footerDark: {
+    color: '#999999',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.85)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  modalImage: {
+    width: '100%',
+    height: '80%',
+    borderRadius: 20,
+  },
+  modalHint: {
+    marginTop: 16,
+    fontSize: 14,
+    color: '#FFFFFF',
+    textAlign: 'center',
   },
 });

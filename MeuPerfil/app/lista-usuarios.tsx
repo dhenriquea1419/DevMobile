@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Header from '../components/Header';
+import NavBar from '../components/NavBar';
+import { useTheme } from '../context/ThemeContext';
 
 interface User {
   id: string;
@@ -74,6 +77,7 @@ const initialUsers: User[] = [
 
 export default function ListaUsuarios() {
   const [users, setUsers] = useState<User[]>(initialUsers);
+  const { darkMode } = useTheme();
 
   const toggleStatus = (id: string) => {
     setUsers(prevUsers =>
@@ -112,23 +116,30 @@ export default function ListaUsuarios() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Lista de Usuários</Text>
-      <FlatList
-        data={users}
-        keyExtractor={(item) => item.id}
-        renderItem={renderUser}
-        contentContainerStyle={styles.list}
-      />
+    <View style={[styles.wrapper, darkMode && styles.wrapperDark]}>
+      <Header title="DA.WEB" showBack={true} />
+      <View style={[styles.container, darkMode && styles.containerDark]}>
+        <Text style={[styles.title, darkMode && styles.titleDark]}>Lista de Usuários</Text>
+        <FlatList
+          data={users}
+          keyExtractor={(item) => item.id}
+          renderItem={renderUser}
+          contentContainerStyle={styles.list}
+        />
+      </View>
+      <NavBar />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#1E1E1E',
+  },
   container: {
     flex: 1,
     backgroundColor: '#1E1E1E', // Fundo escuro para contraste
-    paddingTop: 50,
   },
   title: {
     fontSize: 28, // Maior fonte
@@ -195,5 +206,17 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     fontWeight: 'bold',
+  },
+  wrapperDark: {
+    backgroundColor: '#1E1E1E',
+  },
+  containerDark: {
+    backgroundColor: '#0A0A0A',
+  },
+  titleDark: {
+    color: '#FFFFFF',
+  },
+  cardDark: {
+    backgroundColor: '#2A2A2A',
   },
 });
